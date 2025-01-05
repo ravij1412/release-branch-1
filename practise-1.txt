@@ -53,7 +53,7 @@ CLARK	2450
 MILLER	1300
 KING	5000
 BLAKE	2850
- 
+ ---select * from 
  select max(sal) ,ename,to_char(hiredate,'month') from mldev.emp
 group  by  to_char(hiredate,'month') ,ename;
 
