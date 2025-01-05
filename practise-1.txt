@@ -44,7 +44,7 @@ select sal,deptno,lag(sal) over(order by sal) - lead(sal) over(order by sal) fro
  select *, dense_rank() over(partition by deptno order by sal desc) rnum from mldev.emp)sub1 where rnum <= 2)
  select *, sal-led tt from cte where led is not null;
  
- 
+ -- max salary 
  select  yearr, ename, max(sal) from(
  select * , extract('year' from hiredate) yearr from mldev.emp) sub1 group by 1, 2;  WARD	1250
 TURNER	1500
