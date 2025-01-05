@@ -1,0 +1,83 @@
+with ctes as (
+select max(sal)  as ss from mldev.emp  group by deptno    2850
+5000
+3000
+)
+select lag(sal) over(order by sal) from ctes
+
+select sal ,lag(sal) over (order by sal) from mldev.emp e
+
+with ctes as (
+select sal ,lag(sal) over(order by sal) as rr  from mldev.emp )
+select ctes.sal,ctes.sal-ctes.rr from ctes
+
+with ctes as (
+select sal ,lag(sal) over(order by sal) as rr  from mldev.emp ),
+ctes1 as (select max(sal) ms from mldev.emp 
+)
+select ctes1.ms-ctes.rr from ctes,ctes1
+
+with ctes as (
+select deptno, max(sal)  as ss from mldev.emp  group by deptno   
+),
+ctes1 as (
+select deptno, ss,  lag(ss, 1) over(order by ss) as tt from ctes )
+select  c1.deptno, c2.ss, c2.tt, c2.ss - c2.tt from ctes c1, ctes1  c2 where c1.deptno = c2.deptno;
+
+
+select max(sal) ,ename,to_char(hiredate,'month')  as mm from mldev.emp
+group  by  to_char(hiredate,'month') ,ename
+with ctes as ()
+select max(sal) from mldev.emp
+group  by  to_char(hiredate,'month') )
+select ename ,ctes.max(sal)from mldev.emp e ,ctes
+with ct as(
+select max(sal) as msal from mldev.emp group by deptno)
+
+select sal,deptno,lag(sal) over(order by sal) - lead(sal) over(order by sal) from mldev.emp group by deptno,sal
+
+ select max(sal),lag(sal) over(order by (max(sal) )) -lead(sal) over (order by max(sal) ) from mldev.emp group by max(sal);
+ 
+ with cte as (
+ select *, lead(sal, 1) over(partition by deptno order by sal desc) led from mldev.emp (
+ select *, dense_rank() over(partition by deptno order by sal desc) rnum from mldev.emp)sub1 where rnum <= 2)
+ select *, sal-led tt from cte where led is not null;
+ 
+ 
+ select  yearr, ename, max(sal) from(
+ select * , extract('year' from hiredate) yearr from mldev.emp) sub1 group by 1, 2;  WARD	1250
+TURNER	1500
+JONES	2975
+CLARK	2450
+MILLER	1300
+KING	5000
+BLAKE	2850
+ 
+ select max(sal) ,ename,to_char(hiredate,'month') from mldev.emp
+group  by  to_char(hiredate,'month') ,ename;
+
+
+select * from(
+select *, dense_rank() over(partition by yearr order by sal desc) rnum from(
+select * , extract('year' from hiredate) yearr from mldev.emp)sub1
+)sub2 where rnum = 1 ;
+ 
+create table mldev.tablea (id1 varchar(10));
+create table mldev.tableb (id2 varchar(10));
+
+insert into mldev.tableb values (0);
+insert into mldev.tableb values (1);
+insert into mldev.tableb values (2);
+insert into mldev.tableb values ('null');
+insert into mldev.tableb values ('null');
+tablea     tableb    join
+0            0      0 0
+1            1      1 1 
+null         2      null null
+             null   null null
+            
+             null     
+  top higest sal in each department and diff sal 
+  select * from mldev.emp
+  select max(sal) from mldev.emp group by deptno
+select 
