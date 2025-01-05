@@ -25,6 +25,7 @@ select deptno, ss,  lag(ss, 1) over(order by ss) as tt from ctes )
 select  c1.deptno, c2.ss, c2.tt, c2.ss - c2.tt from ctes c1, ctes1  c2 where c1.deptno = c2.deptno;
 
 
+----- query ------
 select max(sal) ,ename,to_char(hiredate,'month')  as mm from mldev.emp
 group  by  to_char(hiredate,'month') ,ename
 with ctes as ()
