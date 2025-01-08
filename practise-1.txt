@@ -56,7 +56,7 @@ BLAKE	2850
  ---select * from 
  select max(sal) ,ename,to_char(hiredate,'month') from mldev.emp
 group  by  to_char(hiredate,'month') ,ename;
-
+-select---
 
 select * from(
 select *, dense_rank() over(partition by yearr order by sal desc) rnum from(
@@ -81,4 +81,35 @@ null         2      null null
   top higest sal in each department and diff sal 
   select * from mldev.emp
   select max(sal) from mldev.emp group by deptno
+
+ ---------------plsql--------------
+ CREATE OR REPLACE FUNCTION fn_orderitemsum(f_product_name VARCHAR, f_order_id INT)
+    RETURNS DECIMAL
+    LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    fv_name DECIMAL;  -- Declare the return variable of type DECIMAL
+BEGIN
+    -- Calculate the sum of quantity * unit_price
+    SELECT SUM(quantity * unit_price) 
+    INTO fv_name
+    FROM del.order_items
+    WHERE product_name = f_product_name
+      AND order_id = f_order_id;
+
+    -- Return the calculated value
+    RETURN fv_name;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- Return 0 if no matching rows are found (PostgreSQL will not raise NO_DATA_FOUND automatically)
+        RETURN 0;
+    WHEN OTHERS THEN
+        -- Handle other unexpected exceptions
+        RETURN NULL;
+END;
+$$;
+
+call fn_orderitemsum()
 select 
