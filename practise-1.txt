@@ -113,3 +113,195 @@ $$;
 
 call fn_orderitemsum()
 select 
+---------------------
+CREATE TABLE DEL.accounts (
+user_id integer PRIMARY KEY,
+firstname VARCHAR ( 50 ) NOT NULL,
+lastname VARCHAR ( 50 ) NOT NULL,
+email VARCHAR ( 255 ) UNIQUE NOT NULL
+);
+
+create or replace  procedure ADDACCOUNT(ID INT,FIRSTNAME VARCHAR(12),LAST_NAME VARCHAR(12),EMAIL VARCHAR(12))
+language PLPGSQL
+as $$
+begin 
+	insert into DEL.ACCOUNTS VALUES(ID,FIRSTNAME,LAST_NAME,EMAIL);
+end
+$$;
+
+call ADDACCOUNT(1,'RAM','A','RAMA@GMAIL.COM')
+
+CREATE TABLE employees1 (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    age INT
+);
+
+CREATE PROCEDURE add_employee1(emp_name VARCHAR, emp_age INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO employees1 (name, age) VALUES (emp_name, emp_age);
+END;
+$$;
+CALL add_employee1('John Doe', 25);
+select * from employees1
+select * from del.orders  where  customer_id = 385 and  order_id =225275   501.21
+create or replace procedure ADD_ORDER (C_ID INT)
+language PLPGSQL
+as $$
+declare 
+T_AMOUNT DECIMAL;
+begin 
+	select (TOTAL_AMOUNT+1) into T_AMOUNT from del.orders where CUSTOMER_ID =C_ID;
+RAISE NOTICE 'Total Price for ORDER_ITEM_ID % is: %', T_AMOUNT,C_ID;
+END;
+$$;
+call ADD_ORDER(385),5385=156.22
+
+create or replace procedure ADD_ORDER (C_ID INT,O_ID INT)
+language PLPGSQL
+as $$
+begin 
+UPDATE del.orders
+SET total_amount = total_amount-1  WHERE CUSTOMER_ID =C_ID AND order_id =O_ID;
+END;
+$$;
+call ADD_ORDER(385,5385)
+
+select * from del.orders
+select QUANTITY*UNIT_PRICE from del.order_items where product_name ='PRODUCT 1'
+  select * from del.aa
+select ID +1 from del.aa where STATE ='TEXAS'
+SELECT QUANTITY * UNIT_PRICE AS total_price
+FROM del.order_items
+WHERE product_name = 'PRODUCT 1';
+select * from del.orders
+225275
+
+
+CREATE OR REPLACE PROCEDURE ADD_ORDER(C_ID INT,O_ID INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Update the total amount for the customer (subtracting 1)
+    UPDATE del.orders
+    SET TOTAL_AMOUNT = TOTAL_AMOUNT - 1
+    WHERE CUSTOMER_ID = C_ID AND ORDER_ID =O_ID;
+
+    -- Raise a notice to show the result of the operation
+   -- RAISE NOTICE 'Total Amount for Customer ID % updated. New value: %', C_ID,
+   -- (SELECT TOTAL_AMOUNT FROM del.orders WHERE CUSTOMER_ID = C_ID AND  order_id =O_ID);
+END;
+$$;
+CALL ADD_ORDER(385,225275
+);  -- Replace 123 with the actual CUSTOMER_ID you want to update.
+UPDATE del.orders
+    SET TOTAL_AMOUNT = TOTAL_AMOUNT - 1
+    WHERE CUSTOMER_ID = 385;
+
+
+
+select * from del.order_items
+---------fucntions-------------------
+
+CREATE OR REPLACE FUNCTION fn_orderitemsum(f_product_name VARCHAR, f_order_id INT)
+    RETURN DECIMAL;
+    LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    fv_name DECIMAL;  
+BEGIN
+   
+    SELECT SUM(quantity * unit_price) 
+    INTO fv_name
+    FROM del.order_items
+    WHERE product_name = f_product_name
+      AND order_id = f_order_id;
+
+    -- Return the calculated value
+    RETURN fv_name; 
+---if fn_orderitemsum ='null' theN
+	---RAISE NOTICE 'your function is not working: %', total_price;
+---END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Handle any other unexpected exceptions
+        RETURN NULL;
+END;
+$$;
+
+END;
+$$;
+
+IF fn_orderitemsum IS null then
+	return;
+end if;
+
+select * from del.order_items where product_name ='product 1' and order_id =4902073
+select  fn_orderitemsum('product 2',4902073)
+
+SELECT fn_orderitemsum('product 2', ) AS order_total;
+
+create table EROR (ID SERIAL ,)
+select 
+
+
+DO $$
+DECLARE
+    user_email VARCHAR;
+BEGIN
+    IF FN_ORDERITEMSUM IS NULL THEN
+        RAISE NOTICE 'Email is NULL';
+    ELSE
+        RAISE NOTICE 'Email is not NULL';
+    END IF;
+END $$;
+
+-------------------------------------------
+---functions----
+
+DROP FUNCTION fn_order_total(integer) 
+-- Step 3: Create the function to calculate total for an order
+CREATE OR REPLACE FUNCTION fn_order_total(p_order_id INT)
+RETURNS int 
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    total int;
+BEGIN
+    
+    SELECT SUM(quantity * unit_price)
+    INTO total
+    FROM order_item
+    WHERE order_id = p_order_id;
+
+    
+   
+    if total is null then 
+    	raise notice 'no order found on this id %', p_order_id; 
+    	--return;
+    end if;
+    
+   return total;
+END;
+$$;
+
+select *  from fn_order_total(1);
+
+
+
+------------------------------------------------------------------
+
+do $$
+declare 
+begin
+if public.fn_order_total(1) > 0 then 
+	raise notice 'you r code is not working ';
+	return ;
+end if;
+end $$;
+
