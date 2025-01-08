@@ -305,3 +305,22 @@ if public.fn_order_total(1) > 0 then
 end if;
 end $$;
 
+---------
+CREATE OR REPLACE PROCEDURE public.order_total1(IN t_id integer)
+ LANGUAGE plpgsql
+AS $procedure$
+declare
+v_id int;
+begin
+
+raise notice 'start';
+raise notice 't_id value %', t_id;
+	select sum(total_amount) into v_id  from del.orders where order_id= t_id;
+raise notice  'some value %',v_id;
+
+insert into  del.ids  values (v_id);
+
+
+end;
+$procedure$
+;
