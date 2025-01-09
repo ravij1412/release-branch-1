@@ -324,3 +324,14 @@ insert into  del.ids  values (v_id);
 end;
 $procedure$
 ;
+with cte as (
+select p.product_name , p.category,s.*   from del.products p join del.sales s on p.product_id=s.product_id)
+, cte2 as (
+select * from cte  c join del.sales_regions sr on c.sale_id=sr.sale_id),
+cte3 as (
+select * from cte2  c1 join del.regions r on r.region_id = c1.region_id)
+--select region_name, sum(sale_amount), sum(quantity_sold) from cte3;
+select region_name, category, product_name, sum(quantity_sold),sum(sale_amount) from cte3 
+--where sale_date>='2024-10-01' and sale_date<'2025-01-01'  
+group by
+1,2, 3
