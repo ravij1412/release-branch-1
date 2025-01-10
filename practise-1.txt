@@ -335,3 +335,5 @@ select region_name, category, product_name, sum(quantity_sold),sum(sale_amount) 
 --where sale_date>='2024-10-01' and sale_date<'2025-01-01'  
 group by
 1,2, 3
+
+
